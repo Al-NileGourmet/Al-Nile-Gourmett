@@ -1,38 +1,51 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مخطط الوجبات الذكي</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>كتالوج النيل غورميه التفاعلي مع Gemini</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
+            font-family: 'Tajawal', sans-serif;
+            background-color: #FDF8F0;
         }
-        .container {
-            max-width: 960px;
+        .category-btn.active {
+            background-color: #C0392B;
+            color: #FFFFFF;
+            font-weight: 700;
         }
-        .card {
-            background-color: #ffffff;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .btn {
-            transition: all 0.3s ease;
+        ::-webkit-scrollbar-track {
+            background: #FDF8F0;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        ::-webkit-scrollbar-thumb {
+            background-color: #C0392B;
+            border-radius: 10px;
+            border: 2px solid #FDF8F0;
         }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3b82f6;
+        .loading-dots:after {
+            content: ' .';
+            animation: dots 1s linear infinite;
+        }
+        @keyframes dots {
+            0% { content: ' .'; }
+            33% { content: ' ..'; }
+            66% { content: ' ...'; }
+        }
+        /* Custom spinner for image generation */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
+            border-left-color: #C0392B;
+            animation: spin 1s ease infinite;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -40,204 +53,693 @@
         }
     </style>
 </head>
-<body dir="rtl" class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-[#FDF8F0] text-[#4A4A4A]">
 
-    <div id="app" class="container mx-auto p-8 bg-gray-50 rounded-lg shadow-xl card">
-        <h1 class="text-4xl font-bold text-center mb-6 text-gray-800">مخطط وجبات الطعام</h1>
-        <p class="text-center text-gray-600 mb-8">
-            أضف المكونات المتاحة لديك واحصل على وصفات شهية!
-        </p>
+    <div class="container mx-auto p-4 md:p-8">
 
-        <!-- قسم إضافة المكونات -->
-        <div class="mb-8 p-6 card">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-700">أضف مكوناتك</h2>
-            <div class="flex items-center mb-4">
-                <input id="ingredient-input" type="text" placeholder="اكتب مكونًا هنا..." class="flex-grow p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800">
-                <button id="add-btn" class="bg-blue-600 text-white p-3 rounded-r-lg hover:bg-blue-700 btn transition-colors duration-200">
-                    <i class="fas fa-plus"></i>
+        <header class="text-center my-8">
+            <div class="flex flex-col items-center justify-center">
+                <img src="https://i.imgur.com/xS1tNAL.png" alt="Nile Gourmet Logo" class="h-20 md:h-24 mb-2">
+                <h1 class="text-4xl md:text-6xl font-black text-[#C0392B]">النيل غورميه</h1>
+            </div>
+            <p class="text-xl md:text-2xl font-bold mt-2">هتدوق طعم مصر</p>
+            <p class="max-w-2xl mx-auto mt-4 text-gray-600">
+                نؤمن إيماناً راسخاً بأن سر المذاق الرائع يكمن في نقاء وجودة المكونات الأصلية. لهذا السبب، نحرص دائماً على اختيار وتوفير أجود اللحوم والدواجن، لنضمن لكم في كل زيارة تجربة تذوق استثنائية لا مثيل لها.
+            </p>
+        </header>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-8">
+            <img src="https://i.imgur.com/pwb9Bmd.jpeg" alt="كفتة متبلة" class="rounded-xl shadow-lg w-full h-40 object-cover">
+            <img src="https://i.imgur.com/giXicvp.jpeg" alt="انتركوت" class="rounded-xl shadow-lg w-full h-40 object-cover">
+            <img src="https://i.imgur.com/CTzpMSp.jpeg" alt="لحوم جاهزة للشواء" class="rounded-xl shadow-lg w-full h-40 object-cover">
+            <img src="https://i.imgur.com/1gb9Npt.jpeg" alt="ريش" class="rounded-xl shadow-lg w-full h-40 object-cover">
+            <img src="https://i.imgur.com/kREnH1J.jpeg" alt="حمام محشي" class="rounded-xl shadow-lg w-full h-40 object-cover">
+            <img src="https://i.imgur.com/5oClaaV.jpeg" alt="فيليه ستيك" class="rounded-xl shadow-lg w-full h-40 object-cover">
+        </div>
+
+        <nav id="category-nav" class="sticky top-0 bg-[#FDF8F0] bg-opacity-90 backdrop-blur-sm z-10 py-4 mb-8 overflow-x-auto whitespace-nowrap">
+            <div class="flex justify-center items-center space-x-2 space-x-reverse">
+            </div>
+        </nav>
+        
+        <div class="max-w-3xl mx-auto mb-8 bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-lg font-bold mb-2">تصفية حسب السعر: <span id="price-range-value">كل الأسعار</span></h3>
+            <input type="range" id="price-range-slider" min="0" max="200" value="200" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+        </div>
+
+        <!-- New Image Generation Section -->
+        <div class="max-w-3xl mx-auto mb-8 bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+            <h3 class="text-lg font-bold mb-2 text-[#C0392B]">✨ اصنع وجبتك المثالية</h3>
+            <p class="text-center text-gray-600 mb-4">اكتب وصفًا لوجبتك المثالية وشاهد Gemini ينشئ صورة لها!</p>
+            <form id="image-form" class="w-full flex flex-col md:flex-row gap-2">
+                <input type="text" id="image-prompt" class="flex-grow px-4 py-2 border rounded-full text-sm" placeholder="مثال: صورة ستيك جوسي مع الخضار المشوي">
+                <button type="submit" id="generate-image-btn" class="bg-[#C0392B] text-white px-6 py-2 rounded-full font-bold hover:bg-[#A93226] transition-colors">
+                    إنشاء
                 </button>
-            </div>
-            <div id="ingredients-list" class="flex flex-wrap gap-2">
-                <!-- المكونات المضافة ستظهر هنا -->
+            </form>
+            <div id="image-result" class="mt-4 w-full flex justify-center items-center min-h-[200px] border-2 border-dashed border-gray-300 rounded-lg">
+                <p class="text-gray-400">ستظهر الصورة هنا</p>
             </div>
         </div>
 
-        <!-- زر توليد الوصفة -->
-        <div class="text-center mb-8">
-            <button id="generate-recipe-btn" class="bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 btn transition-all duration-300">
-                <span class="mr-2">✨</span> توليد وصفة بفضل Gemini
-            </button>
-        </div>
+        <main id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        </main>
 
-        <!-- قسم عرض الوصفة -->
-        <div id="recipe-section" class="hidden p-6 card">
-            <div class="flex items-center justify-center mb-4">
-                <h2 class="text-2xl font-semibold text-gray-700 mr-4">الوصفة المقترحة</h2>
-                <div id="loading-spinner" class="loader hidden"></div>
-            </div>
-            <div id="recipe-title" class="text-xl font-bold text-gray-800 mb-4 text-center"></div>
-            <div id="recipe-content" class="prose max-w-none text-gray-700 leading-relaxed">
-                <!-- الوصفة المولدة ستظهر هنا -->
+        <footer class="text-center mt-12 py-6 border-t border-gray-300">
+            <p class="font-bold">للتواصل والطلب:</p>
+            <p class="text-lg font-semibold text-[#C0392B] my-2">0554099255</p>
+            <p class="text-gray-600">العنوان: البرشا جنوب 3، أرجان، بناية روز بالاس، محل رقم 15</p>
+        </footer>
+
+        <!-- Recommendation Modal -->
+        <div id="recommendation-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center z-50">
+            <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl relative">
+                <button id="close-modal-btn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+                <h2 class="text-2xl font-black text-[#C0392B] mb-4">✨ توصية Gemini</h2>
+                <div id="recommendation-content" class="text-gray-700"></div>
             </div>
         </div>
         
-        <!-- قسم الخطأ -->
-        <div id="error-message" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-          <strong class="font-bold">عذراً!</strong>
-          <span class="block sm:inline" id="error-text">حدث خطأ ما. يرجى المحاولة مرة أخرى.</span>
+        <!-- Item Details Modal -->
+        <div id="item-details-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center z-50">
+            <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl relative">
+                <button id="close-item-modal-btn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+                <div id="item-details-content"></div>
+            </div>
         </div>
 
-        <!-- قسم توضيحي للاستخدام -->
-        <div class="text-center mt-8 text-sm text-gray-500">
-            <p>تم تطوير هذا التطبيق باستخدام واجهة برمجة تطبيقات Gemini للذكاء الاصطناعي.</p>
+        <!-- Ask the Chef Chatbot -->
+        <button id="toggle-chat-btn" class="fixed bottom-4 right-4 bg-[#C0392B] text-white p-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-110 z-40">
+            <span class="text-2xl">👨‍🍳</span>
+        </button>
+
+        <div id="chef-chat-window" class="fixed bottom-20 right-4 bg-white rounded-lg shadow-2xl w-80 h-96 flex flex-col hidden z-40">
+            <div class="bg-[#C0392B] text-white p-4 rounded-t-lg flex justify-between items-center">
+                <h3 class="font-bold">✨ اسأل الشيف</h3>
+                <button id="close-chat-btn" class="text-white text-xl leading-none">&times;</button>
+            </div>
+            <div id="chat-messages" class="flex-grow p-4 overflow-y-auto">
+            </div>
+            <div class="p-4 border-t border-gray-200">
+                <form id="chat-form" class="flex">
+                    <input type="text" id="chat-input" class="flex-grow px-3 py-2 border rounded-full text-sm" placeholder="اكتب سؤالك...">
+                    <button type="submit" class="bg-[#C0392B] text-white rounded-full p-2 ml-2">ارسال</button>
+                </form>
+            </div>
         </div>
+
     </div>
 
     <script>
-        // دالة لإظهار رسالة الخطأ
-        function showErrorMessage(message) {
-            const errorDiv = document.getElementById('error-message');
-            const errorText = document.getElementById('error-text');
-            errorText.textContent = message;
-            errorDiv.classList.remove('hidden');
+    const menuData = [
+        { category: 'Beef (لحوم)', nameAR: 'مكعبات لحم', nameEN: 'Beef Cubes', descriptionAR: 'قطع لحم بقري طازجة مثالية للطواجن والخضار والأطباق المطبوخة.', descriptionEN: 'Fresh cuts of beef, perfect for casseroles, vegetables and cooked dishes.', price: 60, ingredients: 'لحم بقري، توابل.' },
+        { category: 'Beef (لحوم)', nameAR: 'بيكاتا', nameEN: 'Piccata', descriptionAR: 'شرائح لحم رقيقة، سريعة الطهي ومناسبة للوجبات الخفيفة والمكرونة.', descriptionEN: 'Thinly sliced steaks, quick to cook and suitable for snacks and pasta.', price: 60, ingredients: 'لحم بقري، بهارات.' },
+        { category: 'Beef (لحوم)', nameAR: 'بوفتيك', nameEN: 'Buftek', descriptionAR: 'شرائح لحم رقيقة مثالية للقلي بالبقسماط او الشوي.', descriptionEN: 'Thinly sliced steak, perfect for breading or grilling.', price: 60, ingredients: 'لحم بقري، بقسماط، بيض.' },
+        { category: 'Beef (لحوم)', nameAR: 'فيليه ستيك', nameEN: 'Steak Fillet', descriptionAR: 'قطعة طرية وقليلة الدهون ممتازة للشوي أو القلي.', descriptionEN: 'A tender, low-fat cut, perfect for grilling or frying.', price: 115, ingredients: 'لحم بقري فيليه.' },
+        { category: 'Beef (لحوم)', nameAR: 'لحم مفروم', nameEN: 'Minced Meat', descriptionAR: 'لحم بقري مفروم عالي الجودة، يستخدم في الكفتة والحواوشي وغيرها.', descriptionEN: 'High-quality minced beef, used in kofta, hawawshi, etc.', price: 58, ingredients: 'لحم مفروم.' },
+        { category: 'Beef (لحوم)', nameAR: 'روستو', nameEN: 'Roast Beef', descriptionAR: 'قطعة لحم كبيرة مناسبة للتحمير والتقطيع لشرائح باردة أو ساخنة.', descriptionEN: 'A large piece of meat suitable for roasting and slicing cold or hot.', price: 60, ingredients: 'لحم بقري، توابل.' },
+        { category: 'Beef (لحوم)', nameAR: 'شاورما اللحم', nameEN: 'Meat Shawarma', descriptionAR: 'شرائح لحم رفيعة مثالية لتحضير ساندويتشات الشاورما.', descriptionEN: 'Thin slices of meat, ideal for shawarma sandwiches.', price: 60, ingredients: 'لحم شاورما، بهارات.' },
+        { category: 'Beef (لحوم)', nameAR: 'بيف استروجانوف', nameEN: 'Beef Stroganoff', descriptionAR: 'شرائح لحم رفيعة مناسبة للطهي.', descriptionEN: 'Thin steaks, suitable for cooking.', price: 60, ingredients: 'لحم بقري، كريمة، مشروم.' },
+        { category: 'Beef (لحوم)', nameAR: 'انتركوت', nameEN: 'Entrecôte', descriptionAR: 'قطعة ستيك بنسبة دهون مناسبة، تعطي نكهة غنية عند الشوي.', descriptionEN: 'A steak with the right fat content, which gives a rich flavour when grilled.', price: 75, ingredients: 'لحم بقري.' },
+        { category: 'Beef (لحوم)', nameAR: 'ريب آي', nameEN: 'Ribeye', descriptionAR: 'ستيك غنية بالدهون الداخلية (الماربلينج)، شديدة الطراوة والنكهة.', descriptionEN: 'A steak with plenty of internal fat (marbling), very tender and flavourful.', price: 75, ingredients: 'لحم بقري.' },
+        { category: 'Beef (لحوم)', nameAR: 'رقبة بتلو', nameEN: 'Beef Neck', descriptionAR: 'قطعة غنية بالنكهة، تحتاج طهي بطيء لتصبح طرية جدا.', descriptionEN: 'Full of flavour, needs slow cooking to become very tender.', price: 58, ingredients: 'رقبة بتلو.' },
+        { category: 'Beef (لحوم)', nameAR: 'ريش بتلو', nameEN: 'Beef Chops', descriptionAR: 'قطع من الضلوع بالعظم ممتازة للشوي أو للطواجن.', descriptionEN: 'Bone-in ribeye chunks, great for grilling or casseroles.', price: 80, ingredients: 'ريش بتلو.' },
+        { category: 'Beef (لحوم)', nameAR: 'كبدة شرائح بقري سادة', nameEN: 'Plain Sliced Liver', descriptionAR: 'كبدة بقري طازجة مقطعة شرائح سريعة التحضير.', descriptionEN: 'Fresh sliced beef liver, quick to prepare.', price: 58, ingredients: 'كبدة بقري.' },
+        { category: 'Beef (لحوم)', nameAR: 'كبدة اسكندراني سادة', nameEN: 'Plain Alexandrian Liver', descriptionAR: 'كبدة مقطعة مكعبات صغيرة لتحضير الكبدة الإسكندراني.', descriptionEN: 'Small diced liver, for Alexandrian liver.', price: 58, ingredients: 'كبدة بقري، فلفل حار، ثوم.' },
+        { category: 'Beef (لحوم)', nameAR: 'موزة بقري (بالعظام)', nameEN: 'Beef Shank With Bones', descriptionAR: 'قطعة غنية بالنخاع، مثالية للحساء والطواجن الغنية.', descriptionEN: 'A marrow-rich cut, ideal for rich soups and casseroles.', price: 58, ingredients: 'موزة بقري، عظم.' },
+        { category: 'Beef (لحوم)', nameAR: 'كوارع', nameEN: 'Trotters', descriptionAR: 'أقدام بقري تحتاج طهي طويل، تستخدم في الحساء والأطباق التقليدية.', descriptionEN: 'Long-cooked beef feet, used in soups and traditional dishes.', price: 32, ingredients: 'كوارع بقري، بهارات.' },
+        { category: 'Beef (لحوم)', nameAR: 'عكاوي', nameEN: 'Oxtail', descriptionAR: 'ذيل بقري غني بالجيلاتين والنكهة، مثالي للطهي البطيء.', descriptionEN: 'A gelatinous and flavourful beef tail, ideal for slow cooking.', price: 42, ingredients: 'عكاوي بقري.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'خروف نعيمي بدون عظم', nameEN: 'Naimi Lamb without Bones', descriptionAR: 'لحم خروف نعيمي فاخر منزوع العظم مثالي للشواء أو الطهي السريع.', descriptionEN: 'Premium Naimi lamb meat, boneless, ideal for grilling or quick cooking.', price: 79, ingredients: 'لحم ضاني نعيمي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'ريش ضاني نعيمي', nameEN: 'Naimi Lamb Chops', descriptionAR: 'ريش ضاني نعيمي طرية وعالية الجودة، مثالية للشواء أو القلي.', descriptionEN: 'Tender and high-quality Naimi lamb chops, perfect for grilling or frying.', price: 115, ingredients: 'ريش ضاني نعيمي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'كتف ضاني نعيمي', nameEN: 'Naimi Lamb Shoulder', descriptionAR: 'كتف ضاني نعيمي غني بالنكهة، مناسب للطهي البطيء أو الشواء.', descriptionEN: 'Flavorful Naimi lamb shoulder, suitable for slow cooking or roasting.', price: 68, ingredients: 'كتف ضاني نعيمي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'موزه ضاني نعيمي', nameEN: 'Naimi Lamb Shank', descriptionAR: 'موزه ضاني نعيمي طرية، مثالية للطهي البطيء والأطباق التقليدية.', descriptionEN: 'Tender Naimi lamb shank, ideal for slow cooking and traditional dishes.', price: 69, ingredients: 'موزة ضاني نعيمي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'رقبة ضاني نعيمي', nameEN: 'Naimi Lamb Neck', descriptionAR: 'رقبة ضاني نعيمي غنية بالنكهة مثالية للحساء واليخنات.', descriptionEN: 'Rich and flavorful Naimi lamb neck, perfect for soups and stews.', price: 68, ingredients: 'رقبة ضاني نعيمي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'فخذة ضاني نعيمي', nameEN: 'Naimi Lamb Leg', descriptionAR: 'فخذة ضاني نعيمي كاملة، مثالية للشواء أو الطهي في الفرن.', descriptionEN: 'Whole Naimi lamb leg, ideal for roasting or oven cooking.', price: 68, ingredients: 'فخذة ضاني نعيمي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'غنم محلي', nameEN: 'Local Goat', descriptionAR: 'لحم غنم محلي طازج، متعدد الاستخدامات للطهي بمختلف الطرق.', descriptionEN: 'Fresh local goat meat, versatile for various cooking methods.', price: 60, ingredients: 'لحم غنم محلي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'لحم ضاني استرالي بدون عظم', nameEN: 'Australian Lamb no Bones', descriptionAR: 'لحم ضاني أسترالي عالي الجودة، منزوع العظم، مثالي للشواء أو الطهي السريع.', descriptionEN: 'High-quality Australian lamb meat, boneless, perfect for grilling or quick cooking.', price: 70, ingredients: 'لحم ضاني استرالي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'ريش ضاني أسترالي', nameEN: 'Australian Lamb Chops', descriptionAR: 'ريش ضاني أسترالي طرية وغنية بالنكهة مثالية للشواء أو القلي.', descriptionEN: 'Tender and flavorful Australian lamb chops, ideal for grilling or frying.', price: 115, ingredients: 'ريش ضاني استرالي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'كتف ضاني أسترالي', nameEN: 'Australian Lamb Shoulder', descriptionAR: 'كتف ضاني أسترالي غني بالنكهة مثالي للطهي البطيء أو الشواء.', descriptionEN: 'Rich and flavorful Australian lamb shoulder, suitable for slow cooking or roasting.', price: 58, ingredients: 'كتف ضاني استرالي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'موزة ضاني أسترالي', nameEN: 'Australian Lamb Shank', descriptionAR: 'موزة ضاني أسترالي طرية، مثالية للطهي البطيء والأطباق التقليدية.', descriptionEN: 'Tender Australian lamb shank, perfect for slow cooking and traditional dishes.', price: 60, ingredients: 'موزة ضاني استرالي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'رقبة ضاني أسترالي', nameEN: 'Australian Lamb Neck', descriptionAR: 'رقبة ضاني أسترالي غنية بالنكهة مثالية للحساء واليخنات.', descriptionEN: 'Flavorful Australian lamb neck, ideal for soups and stews.', price: 58, ingredients: 'رقبة ضاني استرالي.' },
+        { category: 'Lamb (لحوم ضاني)', nameAR: 'فخذة ضاني أسترالي', nameEN: 'Australian Lamb Leg', descriptionAR: 'لحم ضاني أسترالي عالي الجودة، مثالي للشواء أو الطهي السريع.', descriptionEN: 'High-quality Australian lamb meat, perfect for grilling or quick cooking.', price: 58, ingredients: 'فخذة ضاني استرالي.' },
+        { category: 'Poultry (دواجن)', nameAR: 'صدور دجاج مخليه', nameEN: 'Chicken Breast', descriptionAR: 'صدور دجاج طازجة ومخلية، خالية من الدهون، مثالية للحميات الصحية.', descriptionEN: 'Fresh and marinated chicken breasts, low in fat, ideal for healthy diets.', price: 45, ingredients: 'صدور دجاج.' },
+        { category: 'Poultry (دواجن)', nameAR: 'صدور دجاج ستيك', nameEN: 'Chicken Steak', descriptionAR: 'صدور دجاج متبلة بتتبيلة خاصة مثالية للشوي والتحضير على الجريل.', descriptionEN: 'Pointed chicken breasts processed with a special marinade, perfect for grilling.', price: 45, ingredients: 'صدور دجاج، توابل.' },
+        { category: 'Poultry (دواجن)', nameAR: 'دجاج مكعبات', nameEN: 'Chicken Cubes', descriptionAR: 'مكعبات دجاج منتظمة الحجم مثالية للطبخ السريع والمقبلات والسلطات.', descriptionEN: 'Uniformly sized chicken cubes, ideal for quick cooking, appetizers, and salads.', price: 45, ingredients: 'دجاج، توابل.' },
+        { category: 'Poultry (دواجن)', nameAR: 'أفخاذ بالعظم', nameEN: 'Chicken Thighs', descriptionAR: 'أفخاذ دجاج طازجة مع العظم غنية بالنكهة والعصارة مثالية للشوي.', descriptionEN: 'Fresh chicken thighs with bone, rich in flavor and juiciness, ideal for grilling.', price: 38, ingredients: 'أفخاذ دجاج.' },
+        { category: 'Poultry (دواجن)', nameAR: 'دجاج كاملة', nameEN: 'Full Chicken', descriptionAR: 'دجاج كامل طازج معالج بعناية، مناسب للطهي الكامل.', descriptionEN: 'Fresh whole chicken processed with care, suitable for complete cooking.', price: 25, ingredients: 'دجاج كامل.' },
+        { category: 'Poultry (دواجن)', nameAR: 'جوز حمام مصري', nameEN: 'Egyptian Pigeons', descriptionAR: 'جوز حمام مصري طازج ومغذي، يتميز بلحمه الناعم والغني بالبروتين.', descriptionEN: 'Fresh and nutritious Egyptian pigeons, characterized by tender and protein-rich meat.', price: 50, ingredients: 'حمام مصري.' },
+        { category: 'Poultry (دواجن)', nameAR: 'دجاج بلدي مصري', nameEN: 'Egyptian Chicken', descriptionAR: 'دجاج بلدي مصري أصيل، مربى بالطرق التقليدية، يتميز بنكهته القوية.', descriptionEN: 'Authentic Egyptian local chicken, characterized by strong flavor and firm texture.', price: 45, ingredients: 'دجاج بلدي.' },
+        { category: 'Poultry (دواجن)', nameAR: 'بط بلدي مصري', nameEN: 'Egyptian Duck', descriptionAR: 'بط مصري بلدي طازج يتميز بلحمه الدهني والغني بالنكهة.', descriptionEN: 'Fresh Egyptian local duck, characterized by fatty and flavorful meat.', price: 45, ingredients: 'بط بلدي.' },
+        { category: 'Poultry (دواجن)', nameAR: 'أرنب بلدي مصري', nameEN: 'Egyptian Rabbit', descriptionAR: 'أرنب مصري بلدي طازج، لحمه ناعم وخفيف، غني بالبروتين ومنخفض الدهون.', descriptionEN: 'Fresh Egyptian local rabbit, with tender and light meat, rich in protein and low in fat.', price: 46, ingredients: 'أرنب بلدي.' },
+        { category: 'Poultry (دواجن)', nameAR: 'ديك رومي مصري', nameEN: 'Egyptian Turkey', descriptionAR: 'ديك رومي مصري أصيل، يتميز بلحمه الصلب والغني بالبروتين.', descriptionEN: 'Authentic Egyptian turkey, characterized by firm and protein-rich meat.', price: 47, ingredients: 'ديك رومي.' },
+        { category: 'Poultry (دواجن)', nameAR: 'ديك رومي أمريكي', nameEN: 'American Turkey', descriptionAR: 'ديك رومي أمريكي معروف بحجمه الكبير وجودته العالية.', descriptionEN: 'American turkey known for its large size and high quality.', price: 39, ingredients: 'ديك رومي.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'طرب متبل', nameEN: 'Tarb marinated', descriptionAR: 'قطع لحم طرية ومتبلة بتوابل تقليدية مثالية للشوي والمقبلات.', descriptionEN: 'Tender meat cuts marinated with traditional spices, perfect for grilling.', price: 60, ingredients: 'طرب لحم، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'كبدة شرايح متبلة', nameEN: 'Silice liver marinated', descriptionAR: 'شرائح كبدة طازجة متبلة بنكهات غنية، مقرمشة ولذيذة.', descriptionEN: 'Fresh liver slices marinated with rich flavors, crispy and delicious.', price: 60, ingredients: 'كبدة، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'سجق متبل', nameEN: 'Sausages marinated', descriptionAR: 'سجق محلي متبل بخلطة توابل خاصة مثالي للإفطار والوجبات السريعة.', descriptionEN: 'Local sausages marinated with special spice blend, ideal for breakfast.', price: 58, ingredients: 'سجق، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'ستيك فيليه متبل', nameEN: 'Steak fillet marinated', descriptionAR: 'قطعة فيليه فاخرة متبلة بدقة، طرية وعالية الجودة.', descriptionEN: 'Luxury fillet steak marinated with precision, tender and high-quality.', price: 110, ingredients: 'فيليه، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'ريب آي متبل', nameEN: 'Ribeye marinated', descriptionAR: 'ريب آي لحم بقري فاخر متبل، غني بالنكهة والعصارة.', descriptionEN: 'Luxury beef ribeye marinated, rich in flavor and juiciness.', price: 78, ingredients: 'ريب آي، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'كباب متبل', nameEN: 'Kabab marinated', descriptionAR: 'كباب تقليدي متبل بتوابل شرقية أصيلة.', descriptionEN: 'Traditional kabab marinated with authentic eastern spices.', price: 80, ingredients: 'كباب، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'كفتة متبلة', nameEN: 'Kofta marinated', descriptionAR: 'كفتة محضرة بالطريقة التقليدية، متبلة بخلطة خاصة.', descriptionEN: 'Kofta prepared in traditional method, marinated with special blend.', price: 58, ingredients: 'كفتة، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'ريش متبلة', nameEN: 'Lamb chops marinated', descriptionAR: 'ريش لحم ضأن طازج متبل، مثالي للشوي.', descriptionEN: 'Fresh lamb chops marinated, perfect for grilling.', price: 110, ingredients: 'ريش ضاني، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'برجر واجيو', nameEN: 'Wagyu burger marinated', descriptionAR: 'برجر لحم واجيو فاخر متبل، ذو جودة عالية.', descriptionEN: 'Luxury Wagyu burger marinated, high-quality meat.', price: 80, ingredients: 'برجر واجيو.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'برجر فراخ', nameEN: 'Chicken burger', descriptionAR: 'برجر دجاج طازج وسريع التحضير.', descriptionEN: 'Fresh and quick-to-prepare chicken burger.', price: 45, ingredients: 'برجر دجاج.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'رغيف حواوشي بلدي', nameEN: 'Hawawshi meat marinated', descriptionAR: 'حواوشي تقليدي محلي بنكهات أصيلة.', descriptionEN: 'Traditional local Hawawshi with authentic flavors.', price: 12, ingredients: 'خبز بلدي، لحم مفروم.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'شيش طاووق متبل', nameEN: 'Shish taouq marinated', descriptionAR: 'شيش طاووق متبل بتتبيلة النيل الشهيرة.', descriptionEN: 'Shish taouq marinated with famous Al-Nile marinade.', price: 48, ingredients: 'دجاج، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'شيش طاووق أفخاذ', nameEN: 'Shish tawook thighs marinated', descriptionAR: 'أفخاذ طاووق متبلة بنكهات مميزة.', descriptionEN: 'Chicken thighs marinated with distinctive flavors.', price: 50, ingredients: 'أفخاذ دجاج، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'أفخاذ دجاج مع العظم', nameEN: 'Bone-in chicken thigh marinated', descriptionAR: 'أفخاذ دجاج طازجة مع العظم متبلة بإتقان.', descriptionEN: 'Fresh bone-in chicken thighs, expertly marinated.', price: 42, ingredients: 'أفخاذ دجاج.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'ستيك دجاج متبل', nameEN: 'Chicken steak marinated', descriptionAR: 'ستيك دجاج مميز متبل بتوابل خاصة.', descriptionEN: 'Distinctive chicken steak marinated with special spices.', price: 45, ingredients: 'دجاج، توابل.' },
+        { category: 'Ready To Grill (جاهز للشواء)', nameAR: 'دجاج متبل', nameEN: 'Chicken marinated', descriptionAR: 'دجاج كامل متبل جاهز للطهي.', descriptionEN: 'Whole chicken marinated and ready for cooking.', price: 45, ingredients: 'دجاج، توابل.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'اسكالوب لحمة', nameEN: 'Meat Escalope', descriptionAR: 'شرائح لحم رقيقة جاهزة للقلي، مغطاة بالبقسماط.', descriptionEN: 'Thin meat slices ready for frying, coated with breadcrumbs.', price: 60, ingredients: 'لحم بقري، بقسماط.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'اسكالوب فراخ', nameEN: 'Chicken Escalope', descriptionAR: 'شرائح دجاج رقيقة جاهزة للقلي، مغطاة بالبقسماط.', descriptionEN: 'Thin chicken slices ready for frying, coated with breadcrumbs.', price: 45, ingredients: 'دجاج، بقسماط.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'كفتة لحمة بانيه', nameEN: 'Meat Kofta Pane', descriptionAR: 'كفتة لحم جاهزة للقلي، مغطاة بالبقسماط.', descriptionEN: 'Meat kofta ready for frying, coated with breadcrumbs.', price: 50, ingredients: 'كفتة لحم، بقسماط.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'كفتة فراخ بانيه', nameEN: 'Chicken Kofta Pane', descriptionAR: 'كفتة دجاج جاهزة للقلي، مغطاة بالبقسماط.', descriptionEN: 'Chicken kofta ready for frying, coated with breadcrumbs.', price: 50, ingredients: 'كفتة دجاج، بقسماط.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'كفتة رز', nameEN: 'Rice Kofta', descriptionAR: 'كفتة محضرة بالأرز، جاهزة للقلي.', descriptionEN: 'Rice kofta prepared and ready for frying.', price: 48, ingredients: 'كفتة، أرز.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'جوز حمام بالأرز', nameEN: 'Pigeon Stuffed Rice', descriptionAR: 'حمام محشو بالأرز جاهز للطهي.', descriptionEN: 'Pigeon stuffed with rice, ready for cooking.', price: 73, ingredients: 'حمام، أرز.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'جوز حمام بالفريك', nameEN: 'Pigeon Stuffed Freekeh', descriptionAR: 'حمام محشو بالفريك جاهز للطهي.', descriptionEN: 'Pigeon stuffed with freekeh, ready for cooking.', price: 75, ingredients: 'حمام، فريك.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'فرخة محشية رز', nameEN: 'Chicken Stuffed With Rice', descriptionAR: 'دجاجة كاملة محشوة بالأرز، جاهزة للطهي.', descriptionEN: 'Whole chicken stuffed with rice, ready for cooking.', price: 35, ingredients: 'دجاج، أرز.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'كبدة بالردة', nameEN: 'Breaded Liver', descriptionAR: 'كبدة جاهزة للقلي، مغطاة بالبقسماط.', descriptionEN: 'Liver ready for frying, coated with breadcrumbs.', price: 60, ingredients: 'كبدة، ردة، بقسماط.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'كبدة إسكندراني', nameEN: 'Alexandrian Liver', descriptionAR: 'كبدة جاهزة للطهي بالطريقة الإسكندرانية.', descriptionEN: 'Liver ready for cooking in Alexandrian style.', price: 60, ingredients: 'كبدة، توابل، فلفل.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'شاورما دجاج', nameEN: 'Chicken Shawarma', descriptionAR: 'شاورما دجاج جاهزة للتسخين والتقديم.', descriptionEN: 'Chicken shawarma ready for heating and serving.', price: 45, ingredients: 'دجاج، توابل شاورما.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'شاورما لحم', nameEN: 'Beef Shawarma', descriptionAR: 'شاورما لحم جاهزة للتسخين والتقديم.', descriptionEN: 'Beef shawarma ready for heating and serving.', price: 62, ingredients: 'لحم، توابل شاورما.' },
+        { category: 'Ready To Fry (جاهز للتحمير)', nameAR: 'ممبار', nameEN: 'Mumbar', descriptionAR: 'أمعاء محشوة جاهزة للطهي.', descriptionAR: 'Stuffed intestines ready for cooking.', price: 60, ingredients: 'أمعاء، أرز، خلطة.' },
+        // New Catering Section
+        { category: 'Catering (كاترنج)', nameAR: 'خدمات الكاترنج والمناسبات', descriptionAR: 'في النيل غورميه، لا نقدم فقط أجود اللحوم والأطعمة الجاهزة، بل نشارككم أيضاً في أجمل لحظاتكم! سواء كنت تستعد لعزومة فاخرة، أو حفل خطوبة مميز، أو أي مناسبة خاصة، نحن هنا لنحولها إلى تجربة مصرية أصيلة لا تُنسى. هدفنا هو أن تعيش أجواء مصر وتتذوق نكهاتها الفريدة في قلب الإمارات، بأسعار تنافسية لا مثيل لها. ولتجربة استثنائية، يمكنك طلب خدمة **الشواء الحي (Live BBQ)**. ما عليك سوى اختيار لحومك المتبلة، وسنرسل لك شيفًا محترفًا مع شواية مخصصة، ليقدم لك ولضيوفك أشهى المشويات الطازجة أمام أعينكم. ومع لمسة خاصة من إضافاتك، نعدك بأننا سنعيد لضيوفك ذكريات جميلة!.', price: null, isCatering: true }
+    ];
+
+    // Helper functions for TTS audio conversion
+    const base64ToArrayBuffer = (base64) => {
+        const binaryString = atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+    };
+
+    const pcmToWav = (pcmData, sampleRate) => {
+        const pcm16 = new Int16Array(pcmData);
+        const numChannels = 1;
+        const bitsPerSample = 16;
+        const byteRate = (sampleRate * numChannels * bitsPerSample) / 8;
+        const blockAlign = (numChannels * bitsPerSample) / 8;
+        const dataSize = pcm16.byteLength;
+
+        const buffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(buffer);
+
+        let offset = 0;
+
+        // RIFF header
+        writeString(view, offset, 'RIFF'); offset += 4;
+        view.setUint32(offset, 36 + dataSize, true); offset += 4;
+        writeString(view, offset, 'WAVE'); offset += 4;
+
+        // FMT sub-chunk
+        writeString(view, offset, 'fmt '); offset += 4;
+        view.setUint32(offset, 16, true); offset += 4;
+        view.setUint16(offset, 1, true); offset += 2; // Audio format (1 for PCM)
+        view.setUint16(offset, numChannels, true); offset += 2;
+        view.setUint32(offset, sampleRate, true); offset += 4;
+        view.setUint32(offset, byteRate, true); offset += 4;
+        view.setUint16(offset, blockAlign, true); offset += 2;
+        view.setUint16(offset, bitsPerSample, true); offset += 2;
+
+        // DATA sub-chunk
+        writeString(view, offset, 'data'); offset += 4;
+        view.setUint32(offset, dataSize, true); offset += 4;
+
+        // Write PCM data
+        const pcmBytes = new Uint8Array(pcm16.buffer);
+        for (let i = 0; i < pcmBytes.length; i++) {
+            view.setUint8(offset + i, pcmBytes[i]);
         }
 
-        // دالة لإخفاء رسالة الخطأ
-        function hideErrorMessage() {
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.classList.add('hidden');
+        return new Blob([view], { type: 'audio/wav' });
+    };
+
+    const writeString = (view, offset, string) => {
+        for (let i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
         }
+    };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const ingredientInput = document.getElementById('ingredient-input');
-            const addBtn = document.getElementById('add-btn');
-            const ingredientsList = document.getElementById('ingredients-list');
-            const generateRecipeBtn = document.getElementById('generate-recipe-btn');
-            const recipeSection = document.getElementById('recipe-section');
-            const recipeTitle = document.getElementById('recipe-title');
-            const recipeContent = document.getElementById('recipe-content');
-            const loadingSpinner = document.getElementById('loading-spinner');
+    const speakDescription = async (description, button) => {
+        const originalText = button.textContent;
+        button.textContent = 'جاري التحميل...';
+        button.disabled = true;
 
-            let ingredients = [];
-
-            // دالة لإضافة مكون
-            function addIngredient() {
-                const ingredient = ingredientInput.value.trim();
-                if (ingredient && !ingredients.includes(ingredient)) {
-                    ingredients.push(ingredient);
-                    renderIngredients();
-                    ingredientInput.value = '';
-                }
-            }
-
-            // دالة لعرض المكونات
-            function renderIngredients() {
-                ingredientsList.innerHTML = '';
-                ingredients.forEach((ing, index) => {
-                    const pill = document.createElement('div');
-                    pill.className = 'bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded-full flex items-center shadow-md';
-                    pill.innerHTML = `
-                        <span>${ing}</span>
-                        <button data-index="${index}" class="ml-2 text-white opacity-75 hover:opacity-100 transition-opacity duration-200">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    ingredientsList.appendChild(pill);
-                });
-            }
-
-            // دالة لحذف مكون
-            ingredientsList.addEventListener('click', (e) => {
-                if (e.target.closest('button')) {
-                    const index = e.target.closest('button').dataset.index;
-                    ingredients.splice(index, 1);
-                    renderIngredients();
-                }
-            });
-
-            // ربط زر الإضافة بحدث النقر
-            addBtn.addEventListener('click', addIngredient);
-
-            // ربط حقل الإدخال بحدث الضغط على Enter
-            ingredientInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    addIngredient();
-                }
-            });
-
-            // دالة لتوليد الوصفة باستخدام Gemini API
-            generateRecipeBtn.addEventListener('click', async () => {
-                hideErrorMessage();
-                if (ingredients.length === 0) {
-                    showErrorMessage('الرجاء إضافة مكون واحد على الأقل لتوليد وصفة.');
-                    return;
-                }
-
-                recipeSection.classList.add('hidden');
-                loadingSpinner.classList.remove('hidden');
-                generateRecipeBtn.disabled = true;
-                generateRecipeBtn.textContent = 'جاري التوليد...';
-
-                const prompt = `اكتب وصفة مفصلة باستخدام هذه المكونات: ${ingredients.join(', ')}. يجب أن تتضمن الوصفة عنوانًا، قائمة بالمكونات، وخطوات التحضير. إذا كانت المكونات غير كافية، اقترح وجبة بسيطة مناسبة.`
-
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=`;
-                let attempt = 0;
-                const maxAttempts = 3;
-
-                while (attempt < maxAttempts) {
-                    try {
-                        const payload = {
-                            contents: [{
-                                parts: [{ text: prompt }]
-                            }]
-                        };
-
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-
-                        const result = await response.json();
-
-                        if (result.candidates && result.candidates.length > 0 && result.candidates[0].content) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            
-                            // تقسيم النص إلى عنوان ومحتوى
-                            const lines = text.split('\n');
-                            const title = lines[0].replace('**', '').replace('**', '').trim();
-                            const content = lines.slice(1).join('\n');
-
-                            recipeTitle.textContent = title;
-                            recipeContent.innerHTML = content.replace(/\n/g, '<br>');
-                            
-                            recipeSection.classList.remove('hidden');
-                            break; // الخروج من الحلقة عند النجاح
-                        } else {
-                            throw new Error('لم يتم العثور على وصفة مناسبة.');
-                        }
-                    } catch (error) {
-                        console.error('فشل في توليد الوصفة:', error);
-                        attempt++;
-                        if (attempt < maxAttempts) {
-                            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt))); // تراجع أسي
-                        } else {
-                            showErrorMessage('عذراً، لم نتمكن من توليد وصفة. يرجى المحاولة مرة أخرى لاحقاً.');
-                            break; // الخروج من الحلقة بعد تجاوز عدد المحاولات
-                        }
-                    } finally {
-                        loadingSpinner.classList.add('hidden');
-                        generateRecipeBtn.disabled = false;
-                        generateRecipeBtn.textContent = '✨ توليد وصفة بفضل Gemini';
+        const payload = {
+            contents: [{
+                parts: [{ text: description }]
+            }],
+            generationConfig: {
+                responseModality: ["AUDIO"],
+                speechConfig: {
+                    voiceConfig: {
+                        prebuiltVoiceConfig: { voiceName: "Rasalgethi" }
                     }
                 }
-            });
-        });
-    </script>
+            },
+            model: "gemini-2.5-flash-preview-tts"
+        };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
 
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            const part = result?.candidates?.[0]?.content?.parts?.[0];
+            const audioData = part?.inlineData?.data;
+            const mimeType = part?.inlineData?.mimeType;
+
+            if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 16000;
+                const pcmData = base64ToArrayBuffer(audioData);
+                const wavBlob = pcmToWav(pcmData, sampleRate);
+                const audioUrl = URL.createObjectURL(wavBlob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+                audio.addEventListener('ended', () => {
+                    URL.revokeObjectURL(audioUrl);
+                    button.textContent = originalText;
+                    button.disabled = false;
+                });
+            } else {
+                throw new Error('Invalid audio data from API');
+            }
+
+        } catch (error) {
+            console.error('API call failed:', error);
+            button.textContent = 'حدث خطأ';
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+            }, 2000);
+        }
+    };
+
+    const generateRecommendation = async (itemNameAR, itemDescriptionAR, itemPrice) => {
+        const modal = document.getElementById('recommendation-modal');
+        const content = document.getElementById('recommendation-content');
+        
+        content.innerHTML = '<p class="loading-dots">جاري إنشاء توصية مخصصة لك</p>';
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        const prompt = `أنا أتصفح قائمة طعام لمطعم، وأفكر في طلب "${itemNameAR}".
+            الطبق موصوف بأنه: "${itemDescriptionAR}". سعره هو ${itemPrice} درهم.
+            بناءً على هذا الطبق، هل يمكنك اقتراح طبق آخر من قائمة طعام مشابه أو طبق يكمل هذا الطبق بشكل جيد؟ يجب أن يكون الاقتراح ضمن نفس الفئة السعرية (بحد أقصى فرق 10 دراهم).
+            اجب بأسلوب ودود ومختصر، كأنك شيف المطعم.`;
+
+        const chatHistory = [{ role: 'user', parts: [{ text: prompt }] }];
+        const payload = { contents: chatHistory };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        let retries = 0;
+        const maxRetries = 3;
+        const baseDelay = 1000;
+
+        const attemptFetch = async () => {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    if (response.status === 429 && retries < maxRetries) {
+                        retries++;
+                        const delay = baseDelay * Math.pow(2, retries);
+                        await new Promise(res => setTimeout(res, delay));
+                        return attemptFetch();
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text || "عذراً، لم أتمكن من إنشاء توصية في الوقت الحالي.";
+                
+                content.innerHTML = `<p>${text}</p>`;
+
+            } catch (error) {
+                console.error('API call failed:', error);
+                content.innerHTML = `<p>عذراً، حدث خطأ أثناء إنشاء التوصية. يرجى المحاولة مرة أخرى.</p>`;
+            }
+        };
+
+        attemptFetch();
+    };
+
+    const showItemDetails = (item) => {
+        const modal = document.getElementById('item-details-modal');
+        const content = document.getElementById('item-details-content');
+        
+        content.innerHTML = `
+            ${item.image ? `<img src="${item.image}" alt="${item.nameAR}" class="w-full h-48 object-cover rounded-t-xl mb-4">` : ''}
+            <h2 class="text-3xl font-black text-[#C0392B] mb-2">${item.nameAR}</h2>
+            <p class="text-lg text-gray-500 mb-4">${item.nameEN}</p>
+            <p class="text-gray-700 mb-4">${item.descriptionAR}</p>
+            <p class="font-bold text-gray-800">المكونات:</p>
+            <p class="text-gray-600">${item.ingredients}</p>
+            <div class="mt-4 text-left">
+                <span class="text-2xl font-black text-[#C0392B]">${item.price} <span class="text-sm">درهم</span></span>
+            </div>
+        `;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    };
+
+    const sendMessageToGemini = async (message) => {
+        const chatMessages = document.getElementById('chat-messages');
+        
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.className = 'flex justify-end mb-2';
+        userMessageDiv.innerHTML = `<div class="bg-blue-200 text-gray-800 p-3 rounded-lg max-w-[80%]">${message}</div>`;
+        chatMessages.appendChild(userMessageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'flex justify-start mb-2';
+        loadingDiv.innerHTML = `<div class="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-[80%] loading-dots"></div>`;
+        chatMessages.appendChild(loadingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        const prompt = `أنا عميل في مطعم النيل غورميه وأتصفح الكتالوج الخاص بك. قائمة الطعام هي: ${JSON.stringify(menuData)}. أجِب عن السؤال التالي كشيف المطعم: ${message}`;
+        const chatHistory = [{ role: 'user', parts: [{ text: prompt }] }];
+        const payload = { contents: chatHistory };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        let retries = 0;
+        const maxRetries = 3;
+        const baseDelay = 1000;
+
+        const attemptFetch = async () => {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    if (response.status === 429 && retries < maxRetries) {
+                        retries++;
+                        const delay = baseDelay * Math.pow(2, retries);
+                        await new Promise(res => setTimeout(res, delay));
+                        return attemptFetch();
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text || "عذراً، لم أتمكن من الإجابة حالياً.";
+                
+                loadingDiv.remove();
+                
+                const chefMessageDiv = document.createElement('div');
+                chefMessageDiv.className = 'flex justify-start mb-2';
+                chefMessageDiv.innerHTML = `<div class="bg-[#FDF8F0] border border-gray-300 text-gray-800 p-3 rounded-lg max-w-[80%]">${text}</div>`;
+                chatMessages.appendChild(chefMessageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            } catch (error) {
+                console.error('API call failed:', error);
+                loadingDiv.remove();
+                const errorMessageDiv = document.createElement('div');
+                errorMessageDiv.className = 'flex justify-start mb-2';
+                errorMessageDiv.innerHTML = `<div class="bg-red-200 text-red-800 p-3 rounded-lg max-w-[80%]">عذراً، حدث خطأ أثناء الاتصال. يرجى المحاولة مرة أخرى.</div>`;
+                chatMessages.appendChild(errorMessageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        };
+
+        attemptFetch();
+    };
+
+    const generateImage = async (prompt) => {
+        const imageResultDiv = document.getElementById('image-result');
+        const generateBtn = document.getElementById('generate-image-btn');
+        const originalBtnText = generateBtn.textContent;
+
+        imageResultDiv.innerHTML = `<div class="spinner"></div>`;
+        generateBtn.disabled = true;
+        generateBtn.textContent = '';
+
+        const payload = { instances: { prompt: prompt }, parameters: { "sampleCount": 1} };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+        
+        let retries = 0;
+        const maxRetries = 3;
+        const baseDelay = 1000;
+
+        const attemptFetch = async () => {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    if (response.status === 429 && retries < maxRetries) {
+                        retries++;
+                        const delay = baseDelay * Math.pow(2, retries);
+                        await new Promise(res => setTimeout(res, delay));
+                        return attemptFetch();
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+                    const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                    imageResultDiv.innerHTML = `<img src="${imageUrl}" alt="Generated Image" class="w-full h-auto rounded-lg shadow-lg">`;
+                } else {
+                    imageResultDiv.innerHTML = `<p class="text-red-500">عذراً، لم يتم إنشاء صورة. يرجى المحاولة بوصف مختلف.</p>`;
+                }
+            } catch (error) {
+                console.error('Image generation failed:', error);
+                imageResultDiv.innerHTML = `<p class="text-red-500">حدث خطأ أثناء إنشاء الصورة. يرجى المحاولة مرة أخرى.</p>`;
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = originalBtnText;
+            }
+        };
+
+        attemptFetch();
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const categoryNav = document.getElementById('category-nav').querySelector('div');
+        const menuGrid = document.getElementById('menu-grid');
+        const modal = document.getElementById('recommendation-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const itemDetailsModal = document.getElementById('item-details-modal');
+        const closeItemDetailsModalBtn = document.getElementById('close-item-modal-btn');
+        const toggleChatBtn = document.getElementById('toggle-chat-btn');
+        const chefChatWindow = document.getElementById('chef-chat-window');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const priceRangeSlider = document.getElementById('price-range-slider');
+        const priceRangeValue = document.getElementById('price-range-value');
+        const imageForm = document.getElementById('image-form');
+        const imagePromptInput = document.getElementById('image-prompt');
+        const priceFilterSection = priceRangeSlider.closest('div');
+
+        const categories = ['الكل', ...new Set(menuData.map(item => item.category))];
+
+        categories.forEach(category => {
+            const button = document.createElement('button');
+            const buttonText = category.includes('(') ? category.split('(')[1].replace(')', '') : category;
+            button.textContent = buttonText;
+            button.dataset.category = category;
+            button.className = 'category-btn px-4 py-2 rounded-full text-sm font-bold transition-colors duration-300 bg-white shadow-sm hover:bg-red-100';
+            if (category === 'الكل') {
+                button.classList.add('active');
+            }
+            categoryNav.appendChild(button);
+        });
+
+        const renderMenu = (filter) => {
+            menuGrid.innerHTML = '';
+            
+            if (filter === 'Catering (كاترنج)') {
+                priceFilterSection.classList.add('hidden');
+                const cateringItem = menuData.find(item => item.category === 'Catering (كاترنج)');
+                if (cateringItem) {
+                    const card = document.createElement('div');
+                    card.className = 'col-span-1 sm:col-span-2 lg:col-span-3 bg-[#C0392B] text-white rounded-xl shadow-lg p-8 flex flex-col justify-center items-center text-center';
+                    card.innerHTML = `
+                        <h2 class="text-3xl md:text-4xl font-black mb-4">
+                           ${cateringItem.nameAR}
+                        </h2>
+                        <p class="text-lg md:text-xl font-medium mb-6 leading-relaxed max-w-2xl">
+                            ${cateringItem.descriptionAR}
+                        </p>
+                        <a href="https://wa.me/971554099255" target="_blank" class="bg-[#FDF8F0] text-[#C0392B] px-8 py-3 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors">
+                            احجز الآن
+                        </a>
+                    `;
+                    menuGrid.appendChild(card);
+                }
+                return;
+            } else {
+                priceFilterSection.classList.remove('hidden');
+            }
+
+            const filteredItems = menuData.filter(item => {
+                const isCatering = item.isCatering === true;
+                const isMatchingCategory = filter === 'الكل' || item.category === filter;
+                const priceMatches = item.price <= priceRangeSlider.value;
+                return !isCatering && isMatchingCategory && priceMatches;
+            });
+            
+            if (filteredItems.length === 0) {
+                menuGrid.innerHTML = `
+                    <div class="col-span-full text-center py-10">
+                        <p class="text-xl text-gray-500">عذراً، لا توجد أصناف في هذه الفئة حالياً.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transition-transform duration-300 hover:scale-[1.02] cursor-pointer';
+                card.innerHTML = `
+                    <div class="relative w-full h-48">
+                        <img src="https://placehold.co/400x300/e5e7eb/6b7280?text= ${encodeURIComponent(item.nameAR)}" alt="${item.nameAR}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4 flex flex-col justify-between flex-grow">
+                        <div>
+                            <h3 class="text-lg font-black text-[#C0392B] mb-1">${item.nameAR}</h3>
+                            <p class="text-sm text-gray-500 mb-2">${item.nameEN}</p>
+                            <p class="text-sm text-gray-600">${item.descriptionAR}</p>
+                        </div>
+                        <div class="mt-4 flex items-end justify-between">
+                            <span class="text-xl font-black text-[#C0392B]">${item.price} <span class="text-sm">درهم</span></span>
+                            <div class="flex space-x-2 space-x-reverse">
+                                <button class="recommend-btn bg-[#FDF8F0] text-[#C0392B] p-2 rounded-full hover:bg-red-200 transition-colors" data-item='${JSON.stringify(item)}'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 9a1 1 0 112 0v5a1 1 0 11-2 0V9zm2-4a1 1 0 110 2 1 1 0 010-2z" />
+                                    </svg>
+                                </button>
+                                <button class="speak-btn bg-[#FDF8F0] text-[#C0392B] p-2 rounded-full hover:bg-red-200 transition-colors" data-description='${item.descriptionAR}'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v14a1 1 0 102 0V3a1 1 0 00-1-1zM5 8a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm-1 2a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                menuGrid.appendChild(card);
+            });
+            
+            // Re-add event listeners
+            document.querySelectorAll('.recommend-btn').forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const item = JSON.parse(btn.dataset.item);
+                    generateRecommendation(item.nameAR, item.descriptionAR, item.price);
+                });
+            });
+
+            document.querySelectorAll('.speak-btn').forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const description = btn.dataset.description;
+                    speakDescription(description, btn);
+                });
+            });
+
+            document.querySelectorAll('.bg-white.rounded-xl.shadow-lg.overflow-hidden').forEach(card => {
+                card.addEventListener('click', (event) => {
+                    const item = JSON.parse(event.currentTarget.querySelector('.recommend-btn').dataset.item);
+                    showItemDetails(item);
+                });
+            });
+        };
+
+        let currentCategory = 'الكل';
+        let currentPrice = priceRangeSlider.value;
+
+        categoryNav.addEventListener('click', (event) => {
+            const target = event.target.closest('.category-btn');
+            if (target) {
+                document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                target.classList.add('active');
+                currentCategory = target.dataset.category;
+                renderMenu(currentCategory);
+            }
+        });
+        
+        priceRangeSlider.addEventListener('input', (event) => {
+            currentPrice = event.target.value;
+            priceRangeValue.textContent = `${currentPrice} درهم أو أقل`;
+            renderMenu(currentCategory);
+        });
+        
+        // Initial render
+        renderMenu(currentCategory);
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+        
+        closeItemDetailsModalBtn.addEventListener('click', () => {
+            itemDetailsModal.classList.add('hidden');
+        });
+
+        itemDetailsModal.addEventListener('click', (event) => {
+            if (event.target === itemDetailsModal) {
+                itemDetailsModal.classList.add('hidden');
+            }
+        });
+
+        toggleChatBtn.addEventListener('click', () => {
+            chefChatWindow.classList.toggle('hidden');
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chefChatWindow.classList.add('hidden');
+        });
+
+        chatForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const message = chatInput.value.trim();
+            if (message) {
+                sendMessageToGemini(message);
+                chatInput.value = '';
+            }
+        });
+
+        imageForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const prompt = imagePromptInput.value.trim();
+            if (prompt) {
+                generateImage(prompt);
+            }
+        });
+    });
+    </script>
 </body>
 </html>
